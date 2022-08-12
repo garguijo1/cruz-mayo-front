@@ -12,24 +12,24 @@ const CardUsuario = (props)=>{
                 <h1>Usuario: <span>{props.cargo}</span></h1>
                 <ul>
                     <li>
-                        <span class="info_key">Nombre Completo: </span>
-                        <span class="info_desc">{props.nombre}</span>
+                        <span className="info_key">Nombre Completo: </span>
+                        <span className="info_desc">{props.nombre}</span>
                     </li>
                     <li>
-                        <span class="info_key">Nombre de Usuario: </span>
-                        <span class="info_desc">{props.usuario}</span>
+                        <span className="info_key">Nombre de Usuario: </span>
+                        <span className="info_desc">{props.usuario}</span>
                     </li>
                     <li>
-                        <span class="info_key">Télefono: </span>
-                        <span class="info_desc">{props.telefono}</span>
+                        <span className="info_key">Télefono: </span>
+                        <span className="info_desc">{props.telefono}</span>
                     </li>
                     <li>
-                        <span class="info_key">Correo Electrónico: </span>
-                        <span class="info_desc">{props.correo}</span>
+                        <span className="info_key">Correo Electrónico: </span>
+                        <span className="info_desc">{props.correo}</span>
                     </li>
                     <li>
-                        <span class="info_key">Sucursal: </span>
-                        <span class="info_desc">{props.sucursal}</span>
+                        <span className="info_key">Sucursal: </span>
+                        <span className="info_desc">{props.sucursal}</span>
                     </li>
                 </ul>
             </div>

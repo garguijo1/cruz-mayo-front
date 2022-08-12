@@ -8,6 +8,7 @@
     margin: 0 auto;
     border-collapse:collapse;
     border: 1px solid var(--dark);
+    width: 85%;
 }
 
 .tit_table_user{

@@ -1,7 +1,11 @@
 import React from "react";
 import '../css/PopUpConfirmacion.css'
 
-const PopUpConfirmacion = (prop)=>{
+const PopUpSiNo = (prop)=>{
+
+    // const cerrar = ()=>{
+    //     document.getElementById(prop.id).close();
+    // }
 
     return(
         <dialog id={prop.idd} className='dialog'>
@@ -17,12 +21,17 @@ const PopUpConfirmacion = (prop)=>{
                 </div>    
                 <div className="cont_button">
                     <button 
-                        id="cerrar_modal"
-                        className="btn_pop_aceptar"
-                        onClick={prop.cerrar}
+                        className="btn_pop_no"
+                        onClick={prop.no}
+                    >
+                       No
+                    </button>
+                    <button 
+                        className="btn_pop_si"
+                        onClick={prop.si}
                         style={{backgroundColor: prop.color}}
                     >
-                        {prop.button}
+                       Si
                     </button>
                 </div>
             </div>   
@@ -30,4 +39,4 @@ const PopUpConfirmacion = (prop)=>{
     );
 }
 
-export default PopUpConfirmacion;
+export default PopUpSiNo;
