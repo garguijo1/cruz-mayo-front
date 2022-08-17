@@ -2,13 +2,22 @@ import React from "react";
 import BarraRegistroFiltro  from "../components/BarraRegistroFiltro";import '../css/Usuarios.css';
 import ContButtonsTab from "../components/ContButtonsTab";
 import ButtonTab from "../components/ButtonTab";
-import PopUpConfirmacion from "../components/PopUpConfirmacion";import Cookies from "universal-cookie";
+import Cookies from "universal-cookie";
 import RegistrarUsuario from "../components/RegistrarUsuario";
 import axios from "axios";
 
 // import MaterialTable from "material-table";
 
 const cookies = new Cookies();
+
+const config = {
+    headers:{
+        "Authorization": `Bearer ${cookies.get('token')}` 
+    }
+};
+
+const infoUser = `?id_usuario=${parseInt(cookies.get("id"))}&tipo=${cookies.get("tipo")}`;
+
 
 const Fila =(props)=>{
     return(
@@ -39,6 +48,8 @@ const Fila =(props)=>{
     );
 }
 
+let usuarios = [];
+
 class Usuario extends React.Component{
 
     constructor() {
@@ -54,8 +65,28 @@ class Usuario extends React.Component{
             },
             users : {
                 data : []
+            },
+            busqueda : '',
+            usuarioData:{
+                id: '',
+                usuario: '',
+                nombre: '',
+                apellidoPaterno: '',
+                apellidoMaterno: '',
+                password: '',
+                tipo_usuario: '',
+                sucursal: '',
+                update : false
+            },
+            mensaje:{
+                texto : 'Hola :)',
+                color: 'var(--normal-dark)'
+            },
+            boton:{
+                texto:'Registrar',
+                accion : this.registrarUsuario,
+                pregunta: '¿Desea Registrar el Usuario?'
             }
-           
         };
 
         this.actualizar = this.actualizar.bind(this);
@@ -63,19 +94,15 @@ class Usuario extends React.Component{
     }
 
     traerUsuarios = async ()=>{
-       console.log('trayendo usuarios ....');
-        const config = {
-            headers:{
-                "Authorization": `Bearer ${cookies.get('token')}` 
-            }
-          };
-          
-        await axios.get(`http://localhost:8000/api/usuarios?id_usuario=${parseInt(cookies.get('id'))}&tipo=${cookies.get('tipo')}`, config)
+    //    console.log('trayendo usuarios ....');
+        
+        await axios.get(`http://localhost:8000/api/usuarios${infoUser}`, config)
         .then(res =>{
-            console.log(res.data);
+            // console.log(res.data);
+            usuarios = res.data;
             this.setState({
                 users:{
-                    data: res.data
+                    data: usuarios
                 }
             });
         })
@@ -88,26 +115,171 @@ class Usuario extends React.Component{
         this.traerUsuarios();
     }
 
-    actualizar(id){
-        console.log('estas actualizando el usuario '+id);
+    capturarBusqueda = async(e)=>{
+        e.persist();
+        await this.setState({busqueda: e.target.value});
+        // console.log(this.state.busqueda);
+        this.filtraBusqueda();
+    }
+
+    filtraBusqueda = ()=>{
+        let search = usuarios.filter(i => {
+            if(i.nombre.toLowerCase().includes(this.state.busqueda.toLowerCase()) || 
+            i.usuario.toLowerCase().includes(this.state.busqueda.toLowerCase())){
+                return i;
+            }
+        });
+        console.log(search);
+        this.setState({users:{data : search}})
+    }
+
+    capturarCambios = async (e)=>{
+        e.persist();
+        console.log(e.target.name, e.target.value);
+        await this.setState({
+            usuarioData:{
+                ...this.state.usuarioData,
+                [e.target.name] : e.target.value
+            }
+        });
+        // console.log(this.state.usuarioData);
+    }
+
+    registrarUsuario = (e)=>{
+        axios.post('http://localhost:8000/api/usuarios',{
+            id_usuario: parseInt(cookies.get("id")),
+            tipo: cookies.get("tipo"),
+            usuario: this.state.usuarioData.usuario,
+            nombre:  this.state.usuarioData.nombre,
+            apellidoPaterno:  this.state.usuarioData.apellidoPaterno,
+            apellidoMaterno:  this.state.usuarioData.apellidoMaterno,
+            password:  this.state.usuarioData.password,
+            tipo_usuario:  this.state.usuarioData.tipo_usuario,
+            sucursal:  this.state.usuarioData.sucursal
+        },config)
+        .then(res =>{
+            this.setState({
+                mensaje:{
+                    texto : 'Usuario registrado exitosamente',
+                    color : 'var(--success)'
+                }
+            })
+            document.getElementById('pop-reg-conf').showModal();
+            this.traerUsuarios();
+        })
+        .catch(err=>{
+            console.log(err);
+            this.setState({
+                mensaje:{
+                    texto : `Error al registrar usuario: ${err.message}`,
+                    color : 'var(--danger)'
+                }
+            })
+            document.getElementById('pop-reg-conf').showModal();
+        })
+        document.getElementById('pop-reg-sino').close();
+    }
+
+    async actualizar(id){
+        await axios.get(`http://localhost:8000/api/usuarios/${id}${infoUser}`,config)
+        .then(res=>{
+            this.setState({
+                usuarioData:{
+                    id: res.data.id,
+                    usuario: res.data.usuario,
+                    nombre: res.data.nombre,
+                    apellidoPaterno: res.data.apellidoPaterno,
+                    apellidoMaterno: res.data.apellidoMaterno,
+                    password: '',
+                    tipo_usuario: res.data.tipo,
+                    sucursal: res.data.sucursal,
+                    update : true
+                },
+                boton:{
+                    texto:'Actualizar',
+                    accion : this.confirmarActualizacion,
+                    pregunta: `Desea Actualizar el usuario ${res.data.nombre}`
+                }
+            })
+            this.abrirRegistro();
+        })
+        .catch(err =>{
+            console.log(err);
+            this.setState({
+                mensaje:{
+                    texto : `Error al traer al usuario: ${err.message}`,
+                    color : 'var(--danger)'
+                }
+            })
+            document.getElementById('pop-reg-conf').showModal();
+        })
+       
+    }
+
+     confirmarActualizacion = async()=>{
+        await axios.put(`http://localhost:8000/api/usuarios/${this.state.usuarioData.id}`,{
+            id_usuario: parseInt(cookies.get("id")),
+            tipo: cookies.get("tipo"),
+            usuario: this.state.usuarioData.usuario,
+            nombre:  this.state.usuarioData.nombre,
+            apellidoPaterno:  this.state.usuarioData.apellidoPaterno,
+            apellidoMaterno:  this.state.usuarioData.apellidoMaterno,
+            password:  this.state.usuarioData.password,
+            tipo_usuario:  this.state.usuarioData.tipo_usuario,
+            sucursal:  this.state.usuarioData.sucursal
+        },config)
+        .then(res=>{
+            this.setState({
+                mensaje:{
+                    texto : 'Usuario actualizado exitosamente',
+                    color : 'var(--success)'
+                }
+            })
+            document.getElementById('pop-reg-conf').showModal();
+            this.traerUsuarios();
+        })
+        .catch(err =>{
+            console.log(err);
+            this.setState({
+                mensaje:{
+                    texto : `Error al actualizar al usuario: ${err.message}`,
+                    color : 'var(--danger)'
+                }
+            })
+            document.getElementById('pop-reg-conf').showModal();
+        })
+        document.getElementById('pop-reg-sino').close();
+        document.getElementById('pop-registrar-user').close();  
+        this.limpiarUsuario();
     }
 
     eliminar(id){
         console.log('estas eliminando el usuario '+id);
     }
 
-    abrirModalNoEncontrado(e){
-        e.preventDefault();
-        document.getElementById('pop-no').showModal();
-    }
-
-    cerrarModalNoEncontrado(e){
-        e.preventDefault();
-        document.getElementById('pop-no').close();
+    limpiarUsuario = ()=>{
+        this.setState({
+            usuarioData:{
+                id: '',
+                usuario: '',
+                nombre: '',
+                apellidoPaterno: '',
+                apellidoMaterno: '',
+                password: '',
+                tipo_usuario: '',
+                sucursal: '',
+                update : false
+            },
+            boton:{
+                texto:'Registrar',
+                accion : this.registrarUsuario,
+                pregunta: '¿Desea Registrar el Usuario?'
+            }
+        })
     }
 
     abrirRegistro(e){
-        e.preventDefault();
+        // e.preventDefault();
         document.getElementById('pop-registrar-user').showModal();  
     }
 
@@ -130,9 +302,10 @@ class Usuario extends React.Component{
                 <BarraRegistroFiltro 
                     registro={true}
                     txtRegistro='Registrar Usuario'
-                    place='Nombre del Usuario'
+                    place='Buscar...'
                     buscar={this.abrirModalNoEncontrado}
-                    registrar={this.traerUsuarios}
+                    registrar={this.abrirRegistro}
+                    change = {this.capturarBusqueda}
                 />
                 <div className="cont_table_user">
                 <table className="table_user">
@@ -166,18 +339,26 @@ class Usuario extends React.Component{
                         </tbody>
                     </table>
                 </div>
-                <PopUpConfirmacion
-                    idd='pop-no'
-                    titulo='Usuarios'
-                    texto='Usuario buscado no encontrado'
-                    button = 'Volver'
-                    cerrar = {this.cerrarModalNoEncontrado}
-                    color= 'var(--warning)'
-                />
+               
                 <RegistrarUsuario
                     idd='pop-registrar-user'
                     cerrar={this.cerrarRegistro}
-                    // usuario={this.state.user}
+                    update = {this.state.usuarioData.update}
+                    cambio = {this.capturarCambios}
+                    /*-------------------------------------------------- */
+                    textBtn = {this.state.boton.texto}
+                    registrar = {this.state.boton.accion}
+                    /*----------------------------------------------- */
+                    mensajeConf = {this.state.mensaje.texto}
+                    colorConf = {this.state.mensaje.color}
+                    pregunta = {this.state.boton.pregunta}
+                    /*--------------------------------------------- */
+                    nombre = {this.state.usuarioData.nombre}
+                    apellidoPaterno = {this.state.usuarioData.apellidoPaterno}
+                    apellidoMaterno = {this.state.usuarioData.apellidoMaterno}
+                    usuario = {this.state.usuarioData.usuario}
+                    tipo = {this.state.usuarioData.tipo_usuario}
+                    sucursal = {this.state.usuarioData.sucursal}
                 />
             </>
         );

@@ -3,6 +3,7 @@ import Cookies from "universal-cookie";
 import CardUsuario from "../components/CardUsuario";
 import PopUpConfirmacion from "../components/PopUpConfirmacion";
 import PopUpSiNo from "../components/PopUpSiNo";
+import axios from "axios";
 
 const cookies = new Cookies();
 
@@ -10,6 +11,22 @@ class Inicio extends React.Component{
 
     cerrarSesion(e){
         e.preventDefault();
+
+        const config = {
+            headers:{
+                "Authorization": `Bearer ${cookies.get('token')}` 
+            }
+          };
+
+
+          axios.get(`http://localhost:8000/api/logout?id_usuario=${parseInt(cookies.get('id'))}&tipo=${cookies.get('tipo')}`, config)
+          .then(res =>{
+            console.log(res);
+          })
+          .catch(err =>{
+              console.log(err);
+          })
+
         cookies.remove('id',{path:'/'});
         cookies.remove('nombre',{path:'/'});
         cookies.remove('apellidoPaterno',{path:'/'});
@@ -18,6 +35,7 @@ class Inicio extends React.Component{
         cookies.remove('sucursal',{path:'/'});
         cookies.remove('usuario',{path:'/'});
         cookies.remove('token',{path:'/'});
+
         window.location.href='/';
     }
 
