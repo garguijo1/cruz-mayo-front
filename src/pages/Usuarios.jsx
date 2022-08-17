@@ -320,8 +320,9 @@ class Usuario extends React.Component{
         document.getElementById('pop-registrar-user').showModal();  
     }
 
-    cerrarRegistro(e){
+    cerrarRegistro = (e)=>{
         e.preventDefault();
+        this.limpiarUsuario();
         document.getElementById('pop-registrar-user').close();  
     }
 
