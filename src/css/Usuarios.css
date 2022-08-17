@@ -2,7 +2,12 @@
 .cont_table_user{
     overflow-x: auto;
     margin-top: 50px;
+    height: 400px;
+    overflow-y: auto;
+    position: relative;
 }
+
+
 
 .table_user{
     margin: 0 auto;
@@ -20,12 +25,18 @@
     padding: 10px;
     border-collapse:collapse;
     border: 1px solid var(--dark);
+    position: sticky;
+    top: 0;
+    left: 0;
 }
 
 .thead_user{
     background-color: var(--primary-dark);
     /* border-bottom: 1px solid var(--dark); */
     border-collapse: collapse;
+    position: sticky;
+    top: 64px;
+    left: 0;
 }
 
 .thead_user>tr{

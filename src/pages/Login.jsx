@@ -46,7 +46,8 @@ class Login extends React.Component{
                 this.setState({
                     dialog:{
                         ...this.state.dialog,
-                        color: 'var(--warning)'
+                        texto :'Usuario o Contraseña incorrecto',
+                        color: 'var(--danger)'
                     }
                 });
                 this.abrirModal();
@@ -55,15 +56,16 @@ class Login extends React.Component{
         .then(res=>{
             cookies.set('id',res.id,{path:'/'});
             cookies.set('nombre',res.nombre,{path:'/'});
-            cookies.set('apellidoPaterno',res.apellidoPaterno,{path:'/'});
-            cookies.set('apellidoMaterno',res.apellidoMaterno,{path:'/'});
             cookies.set('tipo',res.tipo,{path:'/'});
             cookies.set('sucursal',res.sucursal,{path:'/'});
             cookies.set('usuario',res.usuario,{path:'/'});
-            cookies.set('token',res.token,{path:'/'});
+            cookies.set('token',res.apiToken,{path:'/'});
+            cookies.set('direccion',res.direccion,{path:'/'});
+            console.log(res);
             this.setState({
                 dialog:{
                     ...this.state.dialog,
+                    texto :'!Bienvenido '+  cookies.get('nombre'),
                     color: 'var(--primary)'
                 }
             });

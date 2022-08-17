@@ -52,10 +52,9 @@ class Inicio extends React.Component{
 
                     <CardUsuario
                         cargo = {cookies.get('tipo')}
-                        nombre = {`${cookies.get('nombre')} ${cookies.get('apellidoPaterno')} ${cookies.get('apellidoMaterno')}`}
+                        nombre = {cookies.get('nombre')} 
                         usuario = {cookies.get('usuario')}
-                        telefono = '926636364'
-                        correo = 'jreynoso@gmail.com'
+                        direccion = {cookies.get('direccion')}
                         sucursal = {cookies.get('sucursal')}
                         foto = 'shawn.png'
                     />

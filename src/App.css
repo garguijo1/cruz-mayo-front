@@ -1,5 +1,5 @@
 .cont_navBar{
-  width: 300px;
+  width: var(--length-nav);
   height: 100vh;
   position: fixed;
   left: 0;
@@ -35,7 +35,7 @@
 
 .content{
   padding: 20px;
-  padding-left: 320px;
+  padding-left: calc(var(--length-nav) + 20px);
   height: 100vh;
 }
 
@@ -85,7 +85,7 @@
 
 .btn_cerrar_sesion{
   background-color: var(--warning);
-  border: 1px solid #e02929ad;
+  border: 1px solid var(--warning-dark);
   width: 200px;
   height: 50px;
   border-radius: 10px;
@@ -98,7 +98,7 @@
   text-align: center;
   color: var(--primary);
   border-bottom: 1px solid var(--gris);
-  font-size: 50px;
+  font-size: 40px;
   padding-bottom: 20px;
   text-transform: uppercase;
   margin-top: 0;
