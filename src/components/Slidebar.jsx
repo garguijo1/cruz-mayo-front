@@ -1,8 +1,8 @@
 import React from "react";
 import { NavLink, Link } from "react-router-dom";
 
-const Slidebar = () =>{
-    return(
+const Slidebar = () => {
+    return (
         <nav className="navbar">
             <ul className="list_link_navbar">
                 <li className="li_navbar">
