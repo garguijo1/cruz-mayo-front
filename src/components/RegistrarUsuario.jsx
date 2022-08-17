@@ -4,7 +4,6 @@ import PopUpSiNo from "./PopUpSiNo";
 import '../css/RegistrarUsuario.css';
 import Cookies from "universal-cookie";
 import axios from "axios";
-import { render } from "@testing-library/react";
 
 const cookies = new Cookies();
 
@@ -153,7 +152,7 @@ class RegistrarUsuario extends React.Component{
           </dialog>
           <PopUpConfirmacion
             idd='pop-reg-conf'
-            titulo='Registrar Usuario'
+            titulo={this.props.tituloPop}
             texto={this.props.mensajeConf}
             button = 'Aceptar'
             cerrar = {this.cerrarModal}
@@ -161,7 +160,7 @@ class RegistrarUsuario extends React.Component{
           />
           <PopUpSiNo
             idd='pop-reg-sino'
-            titulo='Registrar Usuario'
+            titulo={this.props.tituloPop}
             texto={this.props.pregunta}
             si={this.props.registrar}
             no={this.cerrarModalSino}

@@ -6,8 +6,7 @@ import ButtonTab from "../components/ButtonTab";
 import Cookies from "universal-cookie";
 import RegistrarUsuario from "../components/RegistrarUsuario";
 import axios from "axios";
-
-// import MaterialTable from "material-table";
+import PopUpSiNo from "../components/PopUpSiNo";
 
 const cookies = new Cookies();
 
@@ -81,12 +80,17 @@ class Usuario extends React.Component{
             },
             mensaje:{
                 texto : 'Hola :)',
-                color: 'var(--normal-dark)'
+                color: 'var(--normal-dark)',
+                titulo : 'Registrar Usuario'
             },
             boton:{
                 texto:'Registrar',
                 accion : this.registrarUsuario,
                 pregunta: '¿Desea Registrar el Usuario?'
+            },
+            eliminar:{
+                texto: '',
+                id: ''
             }
         };
 
@@ -161,6 +165,7 @@ class Usuario extends React.Component{
         .then(res =>{
             this.setState({
                 mensaje:{
+                    titulo : 'Registrar Usuario',
                     texto : 'Usuario registrado exitosamente',
                     color : 'var(--success)'
                 }
@@ -172,6 +177,7 @@ class Usuario extends React.Component{
             console.log(err);
             this.setState({
                 mensaje:{
+                    titulo : 'Registrar Usuario',
                     texto : `Error al registrar usuario: ${err.message}`,
                     color : 'var(--danger)'
                 }
@@ -208,6 +214,7 @@ class Usuario extends React.Component{
             console.log(err);
             this.setState({
                 mensaje:{
+                    titulo: 'Cargar Usuario',
                     texto : `Error al traer al usuario: ${err.message}`,
                     color : 'var(--danger)'
                 }
@@ -234,6 +241,7 @@ class Usuario extends React.Component{
         .then(res=>{
             this.setState({
                 mensaje:{
+                    titulo : 'Actualizar Usuario',
                     texto : 'Usuario actualizado exitosamente',
                     color : 'var(--success)'
                 }
@@ -245,6 +253,7 @@ class Usuario extends React.Component{
             console.log(err);
             this.setState({
                 mensaje:{
+                    titulo : 'Actualizar Usuario',
                     texto : `Error al actualizar al usuario: ${err.message}`,
                     color : 'var(--danger)'
                 }
@@ -256,8 +265,33 @@ class Usuario extends React.Component{
         this.limpiarUsuario();
     }
 
-    eliminar(id){
-        console.log('estas eliminando el usuario '+id);
+    eliminar = async()=>{
+        // console.log(`eliminando usuario ${this.state.eliminar.id}`);
+        await axios.delete(`http://localhost:8000/api/usuarios/${this.state.eliminar.id}${infoUser}`,config)
+          .then(res =>{
+            console.log(res);
+            this.setState({
+                mensaje:{
+                    titulo : 'Eliminar Usuario',
+                    texto : 'Usuario eliminado exitosamente',
+                    color : 'var(--success)'
+                }
+            })
+            document.getElementById('pop-reg-conf').showModal();
+            this.traerUsuarios();
+          })
+          .catch(err =>{
+            console.log(err);
+            this.setState({
+                mensaje:{
+                    titulo : 'Eliminar Usuario',
+                    texto : `Error al eliminar usuario: ${err.message}`,
+                    color : 'var(--danger)'
+                }
+            })
+            document.getElementById('pop-reg-conf').showModal();
+          })
+          document.getElementById('pop-eliminar-sino').close();  
     }
 
     limpiarUsuario = ()=>{
@@ -289,6 +323,20 @@ class Usuario extends React.Component{
     cerrarRegistro(e){
         e.preventDefault();
         document.getElementById('pop-registrar-user').close();  
+    }
+
+    ModalEliminar = (id, nombre)=>{
+        this.setState({
+            eliminar:{
+                texto: `¿Eliminar a ${nombre}?`,
+                id: parseInt(id)
+            }
+        })
+        document.getElementById('pop-eliminar-sino').showModal();  
+    }
+
+    cerrarEliminar(){
+        document.getElementById('pop-eliminar-sino').close();  
     }
 
     componentDidMount(){
@@ -336,7 +384,7 @@ class Usuario extends React.Component{
                                     tipo = {u.tipo}
                                     sucursal = {u.sucursal}
                                     actualizar = {()=>this.actualizar(u.id)}
-                                    eliminar = {()=>this.eliminar(u.id)} 
+                                    eliminar = {()=>this.ModalEliminar(u.id,u.nombre)} 
                                 />
                             )}
                         </tbody>
@@ -362,6 +410,16 @@ class Usuario extends React.Component{
                     usuario = {this.state.usuarioData.usuario}
                     tipo = {this.state.usuarioData.tipo_usuario}
                     sucursal = {this.state.usuarioData.sucursal}
+                    tituloPop = {this.state.mensaje.titulo}
+                                
+                />
+                 <PopUpSiNo
+                    idd='pop-eliminar-sino'
+                    titulo='Eliminar Usuario'
+                    texto={this.state.eliminar.texto}
+                    si={this.eliminar}
+                    no={this.cerrarEliminar}
+                    color= 'var(--warning)'
                 />
             </>
         );
