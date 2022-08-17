@@ -113,7 +113,7 @@ class RegistrarUsuario extends React.Component{
                     </label>
                     <label htmlFor="">
                       <div>Tipo</div> 
-                      <select className="input_reg" onChange={this.props.cambio} name="tipo_usuario" >
+                      <select className="input_reg" onChange={this.props.cambio} name="tipo_usuario" id="tipo_user">
                       <option value="-1">Seleccione el tipo de usuario</option>
                         <option value="Administrador" selected={this.props.tipo === 1 ? true : false}>Administrador</option>
                         <option value="Jefe Almacen" selected={this.props.tipo === 2 ? true : false}>Jefe de almacen</option>
@@ -129,7 +129,7 @@ class RegistrarUsuario extends React.Component{
                     </label>
                     <label htmlFor="">
                       <div>Sucursal</div>
-                      <select className="input_reg" onChange={this.props.cambio} name="sucursal">
+                      <select className="input_reg" onChange={this.props.cambio} name="sucursal" id="sucursal_user" >
                         <option value="-1">Seleccione la sucursal</option>
                         {this.state.sucursales.map(s=><option key={s.id} value={s.nombre} selected={this.props.sucursal === s.id ? true : false}>{s.nombre}</option>)}
                       </select>

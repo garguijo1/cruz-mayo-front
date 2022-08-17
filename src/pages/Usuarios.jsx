@@ -1,5 +1,6 @@
 import React from "react";
-import BarraRegistroFiltro  from "../components/BarraRegistroFiltro";import '../css/Usuarios.css';
+import BarraRegistroFiltro  from "../components/BarraRegistroFiltro";
+import '../css/Usuarios.css';
 import ContButtonsTab from "../components/ContButtonsTab";
 import ButtonTab from "../components/ButtonTab";
 import Cookies from "universal-cookie";
@@ -142,7 +143,7 @@ class Usuario extends React.Component{
                 [e.target.name] : e.target.value
             }
         });
-        // console.log(this.state.usuarioData);
+        console.log(this.state.usuarioData);
     }
 
     registrarUsuario = (e)=>{
@@ -217,6 +218,8 @@ class Usuario extends React.Component{
     }
 
      confirmarActualizacion = async()=>{
+        console.log(this.state.usuarioData);
+        console.log('tipo: ',document.getElementById('tipo_user').value);
         await axios.put(`http://localhost:8000/api/usuarios/${this.state.usuarioData.id}`,{
             id_usuario: parseInt(cookies.get("id")),
             tipo: cookies.get("tipo"),
@@ -225,8 +228,8 @@ class Usuario extends React.Component{
             apellidoPaterno:  this.state.usuarioData.apellidoPaterno,
             apellidoMaterno:  this.state.usuarioData.apellidoMaterno,
             password:  this.state.usuarioData.password,
-            tipo_usuario:  this.state.usuarioData.tipo_usuario,
-            sucursal:  this.state.usuarioData.sucursal
+            tipo_usuario: document.getElementById('tipo_user').value,
+            sucursal: document.getElementById('sucursal_user').value
         },config)
         .then(res=>{
             this.setState({
