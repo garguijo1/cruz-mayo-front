@@ -19,6 +19,46 @@ const config = {
 
 const infoUser = `?id_usuario=${parseInt(cookies.get("id"))}&tipo=${cookies.get("tipo")}`;
 
+const botones = (props) => {
+    if (cookies.get("tipo") === "Administrador") {
+        return (
+            <ContButtonsTab>
+                <ButtonTab
+                    texto='Detallar'
+                    back='var(--normal)'
+                    border='var(--normal-dark)'
+                    click={props.detallar}
+                />
+                <ButtonTab
+                    texto='Actualizar'
+                    back='var(--warning)'
+                    border='var(--warning-dark)'
+                    click={props.actualizar}
+                />
+                <ButtonTab
+                    texto='Eliminar'
+                    back='var(--danger)'
+                    border='var(--danger-dark)'
+                    click={props.eliminar}
+                />
+            </ContButtonsTab>
+        );
+    }
+    else {
+        return (
+            <ContButtonsTab>
+                <ButtonTab
+                    texto='Detallar'
+                    back='var(--normal)'
+                    border='var(--normal-dark)'
+                    click={props.detallar}
+                />
+            </ContButtonsTab>
+        );
+    }
+
+}
+
 const Fila = (props) => {
     return (
         <tr>
@@ -28,26 +68,7 @@ const Fila = (props) => {
             <td>{props.correo}</td>
             <td>{props.direccion}</td>
             <td>
-                <ContButtonsTab>
-                    <ButtonTab
-                        texto='Detallar'
-                        back='var(--normal)'
-                        border='var(--normal-dark)'
-                        click={props.detallar}
-                    />
-                    <ButtonTab
-                        texto='Actualizar'
-                        back='var(--warning)'
-                        border='var(--warning-dark)'
-                        click={props.actualizar}
-                    />
-                    <ButtonTab
-                        texto='Eliminar'
-                        back='var(--danger)'
-                        border='var(--danger-dark)'
-                        click={props.eliminar}
-                    />
-                </ContButtonsTab>
+                {botones(props)}
             </td>
 
         </tr>
@@ -93,14 +114,16 @@ class Proveedores extends React.Component {
                 pregunta: '¿Desea Registrar el proveedor?',
                 titulo: 'Registrar Proveedor'
             },
-            eliminar:{
+            eliminar: {
                 texto: '',
                 id: ''
             }
         };
 
-        this.actualizar = this.actualizar.bind(this);
-        this.eliminar = this.eliminar.bind(this);
+        if (cookies.get("tipo") === "Administrador") {
+            this.actualizar = this.actualizar.bind(this);
+            this.eliminar = this.eliminar.bind(this);
+        }
     }
 
     traerProveedores = async () => {
@@ -379,7 +402,7 @@ class Proveedores extends React.Component {
             <>
                 <h1 className="tit_general">Proveedores</h1>
                 <BarraRegistroFiltro
-                    registro={true}
+                    registro={cookies.get("tipo") === "Administrador"}
                     txtRegistro='Registrar Proveedor'
                     place='Nombre del Proveedor'
                     buscar={this.abrirModalNoEncontrado}
@@ -446,7 +469,7 @@ class Proveedores extends React.Component {
                     texto={this.state.eliminar.texto}
                     si={this.eliminar}
                     no={this.cerrarEliminar}
-                    color= 'var(--warning)'
+                    color='var(--warning)'
                 />
             </>
         );
