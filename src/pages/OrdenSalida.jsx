@@ -46,8 +46,6 @@ const FilaDetalle =(props)=>{
             <td>{props.codigo}</td>
             <td>{props.producto}</td>
             <td>{props.cantidad}</td>
-            <td>{props.costo}</td>
-            <td>{props.subtotal}</td>
         </tr>
     );
 }
@@ -222,13 +220,10 @@ class OrdenSalida extends React.Component {
                     idd='pop-detalle-oc'
                     numero  = {this.state.detalleOrden.numero}
                     fecha  = {this.state.detalleOrden.fecha}
-                    estado  ={this.state.detalleOrden.estado}
-                    empresa = {this.state.detalleOrden.empresa}
-                    ruc = {this.state.detalleOrden.ruc}
-                    total = {this.state.detalleOrden.total}
+                    ejecutor  ={this.state.detalleOrden.ejecutor}
                     /*------------------------------------*/
                     volver = {()=>document.getElementById('pop-detalle-oc').close()}
-                    generar= {()=> console.log('...Generar Reporte...') }
+
                 >
                     {this.state.detalleOrden.productos.map(d => 
                         <FilaDetalle
@@ -236,8 +231,6 @@ class OrdenSalida extends React.Component {
                             codigo={d.id}
                             cantidad={d.cantidad}
                             producto={d.nombre}
-                            costo= {d.precio}
-                            subtotal={parseInt(d.cantidad) * parseFloat(d.precio)}
                     />)}
 
                 </DetalleOrdenSalida>

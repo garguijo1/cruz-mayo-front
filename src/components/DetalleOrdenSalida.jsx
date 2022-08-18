@@ -50,6 +50,16 @@ class DetalleOrdenCompra extends React.Component{
                       <div>Ejecutor</div>
                       <input 
                         type="text" 
+                        value={this.props.ejecutor}
+                        className="input_reg"
+                        id="orden_c_costo"
+                        disabled
+                        />
+                    </label>
+                    <label htmlFor="">
+                      <div>Fecha</div>
+                      <input 
+                        type="text" 
                         value={this.props.fecha}
                         className="input_reg"
                         id="orden_c_costo"
@@ -69,8 +79,6 @@ class DetalleOrdenCompra extends React.Component{
                                 <th>codigo</th>
                                 <th>producto</th>
                                 <th>cantidad</th>
-                                <th>costo unitario</th>
-                                <th>subtotal</th>
                             </tr>
                         </thead>
                         <tbody className="tbody_oc">
