@@ -74,7 +74,7 @@ class Inicio extends React.Component {
                         usuario={cookies.get('usuario')}
                         direccion={cookies.get('direccion')}
                         sucursal={cookies.get('sucursal')}
-                        foto='shawn.png'
+                        foto='logo.png'
                     />
                     <button
                         className="btn_cerrar_sesion"

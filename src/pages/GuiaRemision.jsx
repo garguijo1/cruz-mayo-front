@@ -2,23 +2,22 @@ import React from "react";
 import Cookies from "universal-cookie";
 import '../css/css-pages/GuiaRemision.css'
 
+
 const cookies = new Cookies();
 
-function GuiaRemision() {
+class GuiaRemision extends React.Component {
 
-    function componentDidMount() {
-        // if(!cookies.get('id')){
-        //     window.location.href = '/';
-        // }
+    componentDidMount() {
+        if(!cookies.get('id')){
+            window.location.href = '/';
+        }
     }
 
 
-
+    render(){
     return (
         <>
             <h1 className="tit_general">Guía de Remisión</h1>
-
-
             <div className="cabecera-cont">
                 <div className="input-group">
                     <input className="input-numero" type="text" placeholder="Número de ornden de compra" />
@@ -31,11 +30,11 @@ function GuiaRemision() {
                     <div className="cont-datos-proveedor">
                         <span>
                             <label>Nombre de Proveedor</label>
-                            <input type="text" />
+                            <input type="text" disabled />
                         </span>
                         <span>
                             <label>Direccion de Proveedor</label>
-                            <input type="text" />
+                            <input type="text" disabled/>
                         </span>
                     </div>
                     <hr />
@@ -43,27 +42,17 @@ function GuiaRemision() {
                         <div className="cont-datos-guia">
                             <div>
                                 <label>N° de Guía de Remisión</label>
-                                <input type="text" />
-                            </div>
-                            <div>
-                                <label >
-                                    Fecha de translado
-                                </label>
-                            </div>
-                            <div className="cont-inputs">
-                                <input type="text" />
-                                <input type="text" />
-                                <input type="text" />
+                                <input className="input-num" type="text" />
                             </div>
                             <div>
                                 <label>Motivo de traslado</label>
-                                <textarea></textarea>
+                                <textarea className="txt-motivo"></textarea>
                             </div>
                         </div>
 
                         <div className="cont-adjunto">
-                            <button>Adjuntar Guía de Remision</button>
-                            <img alt='Imagen guia de remision'></img>
+                            
+                            <img  className="img_guia" src={ require('../img/sin_img.jpg')}></img>
                             <input type="file" />
                         </div>
                     </div>
@@ -71,7 +60,7 @@ function GuiaRemision() {
             </div>
         </>
     );
-
+    }
 
 }
 

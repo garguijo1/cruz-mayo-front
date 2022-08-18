@@ -35,14 +35,18 @@
     align-items: center;
     background-color: #67ab9f;
     border-color: #ced4da;
-    border-radius: 0px 6px 6px 0px;
+    border-radius: 10px;
     border-style: solid;
     border-width: 1px;
     color: #ffffff;
     display: flex;
-    line-height: 24px;
+    justify-content: center;
+    align-items: center;
     padding: 2px 12px;
-    text-align: center;
+    height: 50px;
+    margin-left: 10px;
+    width: 90px;
+    font-size: 16px;
 }
 
 * {
@@ -55,8 +59,7 @@
     display: flex;
     justify-content: center;
     flex-wrap: nowrap;
-    -webkit-box-align: stretch;
-    align-items: stretch;
+    align-items: center;
     width: 100%;
     margin-top: 10px;
 }
@@ -66,20 +69,34 @@
 }
 
 .input-numero {
-    width: 35 0px;
+    width: 300px;
+    height: 50px;
+    border : 1px solid var(--primary);
+    padding-left: 10px;
+    border-radius: 25px;
+    font-size: 16px;
 }
 
 .cont-second {
     display: flex;
     flex-direction: row;
+    width: 100%;
 }
 
 .cont-datos-proveedor {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: space-around;
     padding: 10px;
-    margin: 11px;
+    margin: 40px 10px 20px 10px;
+}
+
+.cont-datos-proveedor input {
+    height: 40px;
+    border: 1px solid var(--primary);
+    border-radius: 10px;
+    width: 350px;
+    margin-left: 20px;
 }
 
 .cont-datos-guia * {
@@ -90,6 +107,10 @@
     padding: 2px;
 }
 
+.cont-datos-guia{
+    width: 55%;
+    padding: 20px 50px;
+}
 .cont-inputs {
     display: flex;
     flex-wrap: nowrap;
@@ -101,4 +122,41 @@ label {
     display: inline-block;
     margin-bottom: 0.5rem;
     cursor: default;
+}
+
+.input-num,
+.txt-motivo{
+    width: 100%;
+    border: 1px solid #a5a5a5;
+    height: 40px;
+    border-radius: 10px;
+    padding-left: 10px;
+    font-size: 14px;
+}
+
+.txt-motivo{
+    resize: none;
+    height: 100px;
+    padding: 10px;
+
+}
+.cont-adjunto{
+    width: 45%;
+    padding: 50px 30px 20px 30px;
+}
+.img_guia{
+    display: block;
+    margin: 0 auto;
+    width: 90%;
+    height: 250px;
+    background-color: #d8d8d8;
+    border: 1px solid var(--gris);
+    margin-bottom: 50px;
+}
+
+.cont-datos-guia label{
+    color: var(--primary);
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 10px;
 }

@@ -187,6 +187,14 @@ class RegistrarOrdenCompra extends React.Component{
        
     }
 
+    cerrarRegistro=()=>{
+      document.getElementById('pop-registrar-oc').close();
+      document.getElementById('orden_c_prov').value = -1;
+      this.setState({
+        detalles : []
+      })
+    }
+
     componentDidMount(){
         this.traerProveedores();
         this.traerProductos();
@@ -285,8 +293,8 @@ class RegistrarOrdenCompra extends React.Component{
                 <div className="cont_button_reg">
                   <button 
                     className="btn_cancelar_user"
-                    onClick={this.props.cerrar}>
-                    Cancelar
+                    onClick={this.cerrarRegistro}>
+                    Volver
                   </button>
                   <button 
                     className="btn_registrar_user"
