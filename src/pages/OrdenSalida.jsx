@@ -6,6 +6,7 @@ import ButtonTab from "../components/ButtonTab";
 import Cookies from "universal-cookie";
 import axios from "axios";
 import RegistrarOrdenSalida from "../components/RegistrarOrdenSalida";
+import DetalleOrdenSalida from "../components/DetalleOrdenSalida";
 
 
 const cookies = new Cookies();
@@ -39,6 +40,18 @@ const Fila = (props) => {
     );
 }
 
+const FilaDetalle =(props)=>{
+    return(
+        <tr>
+            <td>{props.codigo}</td>
+            <td>{props.producto}</td>
+            <td>{props.cantidad}</td>
+            <td>{props.costo}</td>
+            <td>{props.subtotal}</td>
+        </tr>
+    );
+}
+
 let ordenes = [];
 
 
@@ -59,22 +72,11 @@ class OrdenSalida extends React.Component {
                 data: []
             },
             busqueda: '',
-            ordenData: {
-                id: '',
-                ejecutor: '',
-                fecha: '',
-                editable: true
-            },
-            mensaje: {
-                texto: 'Hola :)',
-                color: 'var(--normal-dark)',
-                titulo: 'Registrar Proveedor'
-            },
-            boton: {
-                texto: 'Registrar',
-                accion: this.registrarOrden,
-                pregunta: '¿Desea Registrar la orden?',
-                titulo: 'Registrar Orden Salida'
+            detalleOrden : {
+                numero : '',
+                fecha : '',
+                ejecutor : '',
+                productos : [],
             }
         };
     }
@@ -113,8 +115,25 @@ class OrdenSalida extends React.Component {
 
 
 
-    async detallar(id) {
+    detallar = async (id) => {
         console.log("Detalle orden de salida " + id);
+        await axios.get(`http://localhost:8000/api/ordenesSalida/${id}${infoUser}`, config)
+        .then(res =>{
+            console.log(res.data);
+            this.setState({
+                detalleOrden : {
+                    numero : res.data.idOrden,
+                    fecha : res.data.fecha,
+                    ejecutor : res.data.ejecutor,
+                    productos : res.data.productos,
+                }
+            });
+
+        })
+        .catch(err =>{
+            console.log(err);
+        })
+        document.getElementById('pop-detalle-oc').showModal();
     }
 
     limpiarOrden = () => {
@@ -136,14 +155,16 @@ class OrdenSalida extends React.Component {
 
     abrirRegistro(e) {
         // e.preventDefault();
-        document.getElementById('pop-registrar-user').showModal();
+        document.getElementById('pop-registrar-os').showModal();
     }
 
     cerrarRegistro = (e) => {
         e.preventDefault();
         this.limpiarOrden();
-        document.getElementById('pop-registrar-user').close();
-        //this.limpiarProveedor();
+        document.getElementById('pop-registrar-os').close();
+        document.getElementById('orden_c_prod').value = '-1';
+        document.getElementById('orden_c_cant').value = '';
+        this.traerOrdenes();
     }
 
     componentDidMount() {
@@ -186,7 +207,7 @@ class OrdenSalida extends React.Component {
                                     id={u.idOrden}
                                     ejecutor={u.ejecutor}
                                     fecha={u.fecha}
-                                    detallar={() => this.detallar(u.id)}
+                                    detallar={() => this.detallar(u.idOrden)}
                                 />
                             )}
                         </tbody>
@@ -194,22 +215,32 @@ class OrdenSalida extends React.Component {
                 </div>
 
                 <RegistrarOrdenSalida
-                    idd='pop-registrar-user'
+                    idd='pop-registrar-os'
                     cerrar={this.cerrarRegistro}
-                    cambio={this.capturarCambios}
-                    /*-------------------------------------------------- */
-                    textBtn={this.state.boton.texto}
-                    registrar={this.state.boton.accion}
-                    /*----------------------------------------------- */
-                    mensajeConf={this.state.mensaje.texto}
-                    colorConf={this.state.mensaje.color}
-                    pregunta={this.state.boton.pregunta}
-                    /*--------------------------------------------- */
-                    id={this.state.ordenData.id}
-                    ejecutor={this.state.ordenData.ejecutor}
-                    fecha={this.state.ordenData.fecha}
-                    tituloPri={this.state.boton.titulo}
                 />
+                <DetalleOrdenSalida
+                    idd='pop-detalle-oc'
+                    numero  = {this.state.detalleOrden.numero}
+                    fecha  = {this.state.detalleOrden.fecha}
+                    estado  ={this.state.detalleOrden.estado}
+                    empresa = {this.state.detalleOrden.empresa}
+                    ruc = {this.state.detalleOrden.ruc}
+                    total = {this.state.detalleOrden.total}
+                    /*------------------------------------*/
+                    volver = {()=>document.getElementById('pop-detalle-oc').close()}
+                    generar= {()=> console.log('...Generar Reporte...') }
+                >
+                    {this.state.detalleOrden.productos.map(d => 
+                        <FilaDetalle
+                            key={d.id}
+                            codigo={d.id}
+                            cantidad={d.cantidad}
+                            producto={d.nombre}
+                            costo= {d.precio}
+                            subtotal={parseInt(d.cantidad) * parseFloat(d.precio)}
+                    />)}
+
+                </DetalleOrdenSalida>
             </>
         );
     }

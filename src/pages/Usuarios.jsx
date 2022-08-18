@@ -204,7 +204,6 @@ class Usuario extends React.Component{
                     titulo: 'Actualizar Usuario',
                     accion : this.confirmarActualizacion,
                     pregunta: `Desea Actualizar el usuario ${res.data.nombre}`,
-                    titulo: 'Actualizar Usuario'
                 }
             })
             this.abrirRegistro();
@@ -310,8 +309,7 @@ class Usuario extends React.Component{
                 texto:'Registrar',
                 titulo: 'Registrar Usuario',
                 accion : this.registrarUsuario,
-                pregunta: '¿Desea Registrar el Usuario?',
-                titulo: 'Registrar Usuario'
+                pregunta: '¿Desea Registrar el Usuario?'
             }
         })
     }

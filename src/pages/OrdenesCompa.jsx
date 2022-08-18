@@ -6,7 +6,7 @@ import ButtonTab from "../components/ButtonTab";
 import Cookies from "universal-cookie";
 import RegistrarOrdenCompra from "../components/RegistrarOrdenCompra";
 import axios from "axios";
-import PopUpSiNo from "../components/PopUpSiNo";
+import DetalleOrdenCompra from '../components/DetalleOrdenCompra'
 
 const cookies = new Cookies();
 
@@ -41,6 +41,18 @@ const Fila =(props)=>{
     );
 }
 
+const FilaDetalle =(props)=>{
+    return(
+        <tr>
+            <td>{props.codigo}</td>
+            <td>{props.producto}</td>
+            <td>{props.cantidad}</td>
+            <td>{props.costo}</td>
+            <td>{props.subtotal}</td>
+        </tr>
+    );
+}
+
 let ordenes = [];
 
 class OrdenCompra extends React.Component{
@@ -53,23 +65,19 @@ class OrdenCompra extends React.Component{
                 data : []
             },
             busqueda : '',
-            mensaje:{
-                texto : 'Hola :)',
-                color: 'var(--normal-dark)',
-                titulo : 'Registrar Usuario'
-            },
-            boton:{
-                texto:'Registrar',
-                accion : this.registrarUsuario,
-                pregunta: '¿Desea Registrar el Usuario?',
-                titulo: 'Registrar Usuario'
+            detalleOrden : {
+                numero : '',
+                fecha : '',
+                estado : '',
+                empresa: '',
+                ruc: '',
+                productos : [],
+                total : ''
             }
         };
     }
 
-    traerOrdenes = async ()=>{
-     
-            
+    traerOrdenes = async ()=>{ 
             await axios.get(`http://localhost:8000/api/ordenesCompra${infoUser}`, config)
             .then(res =>{
                 // console.log(res.data);
@@ -84,8 +92,40 @@ class OrdenCompra extends React.Component{
             .catch(err =>{
                 console.log(err);
             })
-        }
+    }
 
+    traerDataOrden = async (id)=>{
+        await axios.get(`http://localhost:8000/api/ordenesCompra/${id}${infoUser}`, config)
+            .then(res =>{
+                let totOrden = 0;
+                console.log(res.data);
+                res.data.productos.map(p => {
+                    totOrden = totOrden + (parseInt(p.cantidad) * parseFloat(p.precio))
+                })
+                this.setState({
+                    detalleOrden : {
+                        numero : res.data.id,
+                        fecha : res.data.fecha_compra,
+                        estado : res.data.estado,
+                        empresa: res.data.nombre_proveedor,
+                        ruc: res.data.ruc_proveedor,
+                        productos : res.data.productos,
+                        total : totOrden
+                    }
+                });
+
+            })
+            .catch(err =>{
+                console.log(err);
+            })
+        document.getElementById('pop-detalle-oc').showModal();
+    }
+
+    cerrarModal = ()=>{
+        document.getElementById('pop-conf-oc').close();
+        document.getElementById('pop-registrar-oc').close();
+        this.traerOrdenes();
+    }
 
     componentDidMount(){
         if(!cookies.get('id')){
@@ -112,7 +152,7 @@ class OrdenCompra extends React.Component{
             <div className="cont_table_user">
                 <table className="table_user">
                         <caption className="tit_table_user">
-                            Lista de Usuarios
+                            Lista de Ordenes de Compra
                         </caption>
 
                         <thead className="thead_user">
@@ -134,7 +174,7 @@ class OrdenCompra extends React.Component{
                                     ruc = {u.rucProveedor}
                                     costo = {`S/. ${u.costoTotal}`}
                                     estado = {u.estado}
-                                    detallar = {this.traerOrdenes}
+                                    detallar = {() => this.traerDataOrden(u.idOrden)}
                                 />
                             )}
                         </tbody>
@@ -142,7 +182,33 @@ class OrdenCompra extends React.Component{
                 </div>
                 <RegistrarOrdenCompra
                     idd='pop-registrar-oc'
+                    cerrar = {() => document.getElementById('pop-registrar-oc').close()}
+                    /*------------------------- */
+                    cerrarConf = {this.cerrarModal}
                 />
+                <DetalleOrdenCompra
+                    idd='pop-detalle-oc'
+                    numero  = {this.state.detalleOrden.numero}
+                    fecha  = {this.state.detalleOrden.fecha}
+                    estado  ={this.state.detalleOrden.estado}
+                    empresa = {this.state.detalleOrden.empresa}
+                    ruc = {this.state.detalleOrden.ruc}
+                    total = {this.state.detalleOrden.total}
+                    /*------------------------------------*/
+                    volver = {()=>document.getElementById('pop-detalle-oc').close()}
+                    generar= {()=> console.log('...Generar Reporte...') }
+                >
+                    {this.state.detalleOrden.productos.map(d => 
+                        <FilaDetalle
+                            key={d.id}
+                            codigo={d.id}
+                            cantidad={d.cantidad}
+                            producto={d.nombre}
+                            costo= {d.precio}
+                            subtotal={parseInt(d.cantidad) * parseFloat(d.precio)}
+                    />)}
+
+                </DetalleOrdenCompra>
             </>
         );
     }

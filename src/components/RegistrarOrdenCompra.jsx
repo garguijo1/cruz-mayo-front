@@ -60,7 +60,13 @@ class RegistrarOrdenCompra extends React.Component{
         },
         productos: [],
         provedores: [],
-        detalles: []
+        detalles: [],
+        total : 0,
+        mensaje:{
+            texto : 'Hola :)',
+            color: 'var(--normal-dark)',
+            titulo : 'Registrar Usuario',
+        }
       }
 
     }
@@ -99,9 +105,9 @@ class RegistrarOrdenCompra extends React.Component{
         await axios.get(`http://localhost:8000/api/productos${infoUser}`, config)
         .then(res =>{
             productosData = res.data;
-          this.setState({
-              productos : productosData
-          });
+            this.setState({
+                productos : productosData
+            });
             
         })
         .catch(err =>{
@@ -109,21 +115,77 @@ class RegistrarOrdenCompra extends React.Component{
         })
       }
 
-    // capturarCambios = async ()=>{
-    //     await this.setState({
-    //         filaDetalle:{
-    //             ...this.state.filaDetalle,
-    //             [e.target.name] : e.target.value
-    //         }
-    //     });
-    //     console.log(this.state.usuarioData);
-    // }
+    capturarCambios = async ()=>{
+        await this.setState({
+            filaDetalle:{
+                id:  parseInt(document.getElementById('orden_c_prod').value) ,
+                nombre: document.getElementById('orden_c_prod').selectedOptions[0].dataset.nombre,
+                cantidad: parseInt(document.getElementById('orden_c_cant').value),
+                precio: parseFloat(document.getElementById('orden_c_costo').value),
+                subtotal: parseInt(document.getElementById('orden_c_cant').value) * parseFloat(document.getElementById('orden_c_costo').value)
+            }
+        });
+        detalleData.push(this.state.filaDetalle);
+        console.log(this.state.filaDetalle);
+    }
 
-      agregarDetalle = () => {
+    agregarDetalle = async () => {
+        await this.capturarCambios();
+        await this.setState({
+            detalles : detalleData
+        });
+        let suma = 0;
+        this.state.detalles.forEach(d => {
+            suma = suma + d.subtotal;
+        });
+        this.setState({
+            total : suma
+        });
+        document.getElementById('orden_c_prod').value = '-1';
+        document.getElementById('orden_c_costo').value = '';
+        document.getElementById('orden_c_cant').value = '';
+
+    }
+
+    elminarDetalle = async (id) =>{
+        let filtro = detalleData.filter(d => d.id != id);
+        detalleData = filtro;
+        await this.setState({
+            detalles : detalleData
+        });
+        let suma = 0;
+        this.state.detalles.forEach(d => {
+            suma = suma + d.subtotal;
+        });
+        this.setState({
+            total : suma
+        })
+    }
+
+    registrarOrden = async () =>{
+        console.log('fila detalle: ',this.state.detalles);
+        await axios.post('http://localhost:8000/api/ordenesCompra',{
+            id_usuario: parseInt(cookies.get("id")),
+            tipo: cookies.get("tipo"),
+            proveedor : parseInt(document.getElementById('orden_c_prov').value),
+            productos : this.state.detalles
+        },config)
+        .then(res => {
+            console.log(res);
             this.setState({
-                detalles : [...this.state.detalles, this.state.filaDetalle]
-            });
-      }
+                mensaje:{
+                    texto : 'Orden de compra registrado satisfactoriamente',
+                    color: 'var(--success)',
+                    titulo : 'Registrar Orden de Compra',
+                }
+            })
+            document.getElementById('pop-conf-oc').showModal();
+        })
+        .catch(err => {
+            console.log(err);
+        })
+       
+    }
 
     componentDidMount(){
         this.traerProveedores();
@@ -204,11 +266,11 @@ class RegistrarOrdenCompra extends React.Component{
                                 <Fila 
                                     key={d.id}
                                     idd={d.id}
-                                    producto = {d.producto}
+                                    producto = {d.nombre}
                                     cantidad = {parseInt(d.cantidad)}
                                     precio = {parseFloat(d.precio)}
-                                    sucursal = {parseInt(d.cantidad) * parseFloat(d.precio)}
-                                    eliminar = {this.eliminar} 
+                                    subtotal = {parseInt(d.cantidad) * parseFloat(d.precio)}
+                                    eliminar = {()=>this.elminarDetalle(d.id)} 
                                 />
                             )}
                         </tbody>
@@ -217,7 +279,7 @@ class RegistrarOrdenCompra extends React.Component{
                 <div className="cont_total_oc">
                     <div>
                         <div className="oc_total">Total</div>
-                        <div className="oc_precio">S/. 100.00</div>
+                        <div className="oc_precio">{`S/. ${this.state.total}`}</div>
                     </div>
                 </div>
                 <div className="cont_button_reg">
@@ -228,27 +290,19 @@ class RegistrarOrdenCompra extends React.Component{
                   </button>
                   <button 
                     className="btn_registrar_user"
-                    onClick={this.props.cerrar}>
+                    onClick={this.registrarOrden}>
                     Registrar
                   </button>
                  </div>
             </div>
           </dialog>
           <PopUpConfirmacion
-            // idd='pop-reg-conf'
-            // titulo={this.props.tituloPop}
-            // texto={this.props.mensajeConf}
-            // button = 'Aceptar'
-            // cerrar = {this.cerrarModal}
-            // color= {this.props.colorConf}
-          />
-          <PopUpSiNo
-            // idd='pop-reg-sino'
-            // titulo={this.props.tituloPop}
-            // texto={this.props.pregunta}
-            // si={this.props.registrar}
-            // no={this.cerrarModalSino}
-            // color= 'var(--success)'
+            idd='pop-conf-oc'
+            titulo={this.state.mensaje.titulo}
+            texto={this.state.mensaje.texto}
+            button = 'Aceptar'
+            cerrar = {this.props.cerrarConf}
+            color= {this.state.mensaje.color}
           />
         </>
       );

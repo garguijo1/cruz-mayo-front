@@ -4,7 +4,7 @@
     justify-content: center;
     margin-top: 20px;
     border-top: 1px solid var(--gris);
-    padding-top: 20px;
+    /* padding-top: 20px; */
     height: 300px;
     overflow: auto;
     position: relative;
@@ -27,7 +27,7 @@
 
 .thead_oc{
     position: sticky;
-    top: 67px;
+    top: 63px;
     background-color: #fff;
 }
 
