@@ -1,45 +1,56 @@
-// import React from "react";
-// import BarraRegistroFiltro from "../../components/BarraRegistroFiltro";
-// import Cookies from "universal-cookie";
 
 
-// const cookies = new Cookies();
-// class Productos extends React.Component {
-//     componentDidMount() {
-//         if (!cookies.get('id')) {
-//             window.location.href = '/';
-//         }
-//     }
-//     render() {
-//         return (
-//             <>
-//                 <h1 className="tit_general">Productos</h1>
-//                 <BarraRegistroFiltro
-//                     registro={true}
-//                     txtRegistro='Registrar Producto'
-//                     place='Nombre del Producto'
-//                 />
-//             </>
-//         );
-//     }
-
-// }
-
-
-// export default Productos;
-
-import React from 'react'
+import React, { useState } from 'react'
 import Tabla from '../components/Tabla'
 import '../css/css-pages/Productos.css'
+import PopupProducto from '../components/PopupProducto'
+import PopUpSiNo from '../components/PopUpSiNo';
 
 function Productos() {
+
+  function registrarProducto(e) {
+    e.preventDefault();
+    document.getElementById('pop-registrar-producto').showModal();
+  };
+
+  function detallarProducto(e) {
+    e.preventDefault();
+    document.getElementById('pop-detallar-producto').showModal();
+  }
+
+  function actualizarProducto(e) {
+
+    e.preventDefault();
+    document.getElementById('pop-actualizar-producto').showModal();
+  }
+
+  function eliminarProducto(e) {
+    e.preventDefault();
+
+    document.getElementById('pop-reg-sino').showModal();
+  }
+
+  const capturarCambios = async (e) => {
+    e.persist();
+    console.log(e.target.name, e.target.value);
+
+  }
+
+
+  const cerrarRegistro = (e) => {
+    e.preventDefault();
+    this.limpiarProveedor();
+    // document.getElementById('pop-registrar-user').close();
+    //this.limpiarProveedor();
+  }
+
   return (
     <div className="main-cont">
 
       <h1 className="title-products">PRODUCTOS</h1>
       <hr />
       <form className='form-products'>
-        <button className='btn-form'>
+        <button className='btn-form' onClick={registrarProducto}>
           Registrar Producto
         </button>
         <span className='inpt-cont'>
@@ -51,7 +62,34 @@ function Productos() {
       <Tabla
         headers={['N° SERIE', ' PRODUCTO', 'LABORATORIO']}
         title='LISTA PRODUCTOS'
+        registrar={registrarProducto}
+        detallar={detallarProducto}
+        eliminar={eliminarProducto}
+        actualizar={actualizarProducto}
+
       />
+
+      <PopupProducto
+        idd='pop-registrar-producto' titulo='Registrar Producto'
+      />
+
+      <PopupProducto
+        idd='pop-detallar-producto' titulo='Detallar Producto'
+      />
+
+      <PopupProducto
+        idd='pop-actualizar-producto' titulo='Actualizar Producto'
+      />
+
+      <PopUpSiNo
+        idd='pop-reg-sino'
+        titulo='Eliminar Producto'
+        texto={'¿Desea Eliminar el producto?'}
+        si={{}}
+        no={{}}
+        color='var(--success)'
+      />
+
     </div>
   )
 }

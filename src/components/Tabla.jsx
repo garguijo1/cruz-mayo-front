@@ -1,7 +1,7 @@
 import React from 'react'
 import '../css/Tabla.css'
 
-function Tabla({ title, headers, data }) {
+function Tabla({ title, headers, data, detallar, actualizar, eliminar }) {
 
 
 
@@ -20,15 +20,15 @@ function Tabla({ title, headers, data }) {
                     <td>8999</td>
                     <td>Amoxicilina</td>
                     <td>Drogopharmacy</td>
-                    <td><button className='btn-detallar boton'>Detallar</button></td>
-                    <td><button className='btn-actualizar boton'>Actualizar</button></td>
-                    <td><button className='btn-eliminar boton'>Eliminar</button></td>
+                    <td><button className='btn-detallar boton' onClick={detallar}>Detallar</button></td>
+                    <td><button className='btn-actualizar boton' onClick={actualizar}>Actualizar</button></td>
+                    <td><button className='btn-eliminar boton' onClick={eliminar}>Eliminar</button></td>
                 </tr>
                 <tr className='row-table'>
                     <td>2345</td>
                     <td>Pastilla</td>
                     <td>Exodo</td>
-                    <td><button className='btn-detallar boton'>Detallar</button></td>
+                    <td><button className='btn-detallar boton' >Detallar</button></td>
                     <td><button className='btn-actualizar boton'>Actualizar</button></td>
                     <td><button className='btn-eliminar boton'>Eliminar</button></td>
                 </tr>

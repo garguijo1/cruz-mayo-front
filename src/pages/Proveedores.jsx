@@ -268,6 +268,7 @@ class Proveedores extends React.Component {
                 this.setState({
                     mensaje: {
                         titulo: 'Actualizar Proveedor',
+
                         texto: 'Proveedor actualizado exitosamente',
                         color: 'var(--success)'
                     }
