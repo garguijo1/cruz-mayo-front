@@ -86,7 +86,8 @@ class Usuario extends React.Component{
             boton:{
                 texto:'Registrar',
                 accion : this.registrarUsuario,
-                pregunta: '¿Desea Registrar el Usuario?'
+                pregunta: '¿Desea Registrar el Usuario?',
+                titulo: 'Registrar Usuario'
             },
             eliminar:{
                 texto: '',
@@ -114,10 +115,6 @@ class Usuario extends React.Component{
         .catch(err =>{
             console.log(err);
         })
-    }
-
-    click(){
-        this.traerUsuarios();
     }
 
     capturarBusqueda = async(e)=>{
@@ -204,6 +201,7 @@ class Usuario extends React.Component{
                 },
                 boton:{
                     texto:'Actualizar',
+                    titulo: 'Actualizar Usuario',
                     accion : this.confirmarActualizacion,
                     pregunta: `Desea Actualizar el usuario ${res.data.nombre}`
                 }
@@ -309,6 +307,7 @@ class Usuario extends React.Component{
             },
             boton:{
                 texto:'Registrar',
+                titulo: 'Registrar Usuario',
                 accion : this.registrarUsuario,
                 pregunta: '¿Desea Registrar el Usuario?'
             }
@@ -412,6 +411,8 @@ class Usuario extends React.Component{
                     tipo = {this.state.usuarioData.tipo_usuario}
                     sucursal = {this.state.usuarioData.sucursal}
                     tituloPop = {this.state.mensaje.titulo}
+
+                    titPrincipal = {this.state.boton.titulo}
                                 
                 />
                  <PopUpSiNo

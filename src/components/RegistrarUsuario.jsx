@@ -68,7 +68,7 @@ class RegistrarUsuario extends React.Component{
             <dialog className="dia-reg-user" id={this.props.idd}>
               <div  className="cont-reg-user">
                 <div className="cont-tit-reg-user">
-                  <h1>Registrar Usuario</h1>
+                  <h1>{this.props.titPrincipal}</h1>
                 </div>
                 <div className="cont-form-reg-user">
                   <div className="cont_form_reg">
