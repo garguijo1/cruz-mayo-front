@@ -5,6 +5,7 @@ import '../css/Proveedores.css';
 import ButtonTab from "../components/ButtonTab";
 import Cookies from "universal-cookie";
 import RegistrarProveedor from "../components/RegistrarProveedor";
+import PopUpSiNo from "../components/PopUpSiNo";
 import axios from "axios";
 
 
@@ -79,16 +80,22 @@ class Proveedores extends React.Component {
                 telefono: '',
                 direccion: '',
                 correo: '',
-                update: false
+                editable: true
             },
             mensaje: {
                 texto: 'Hola :)',
-                color: 'var(--normal-dark)'
+                color: 'var(--normal-dark)',
+                titulo: 'Registrar Proveedor'
             },
             boton: {
                 texto: 'Registrar',
                 accion: this.registrarProveedor,
-                pregunta: '¿Desea Registrar el proveedor?'
+                pregunta: '¿Desea Registrar el proveedor?',
+                titulo: 'Registrar Proveedor'
+            },
+            eliminar:{
+                texto: '',
+                id: ''
             }
         };
 
@@ -154,6 +161,7 @@ class Proveedores extends React.Component {
             .then(res => {
                 this.setState({
                     mensaje: {
+                        titulo: 'Registrar Proveedor',
                         texto: 'Proveedor registrado exitosamente',
                         color: 'var(--success)'
                     }
@@ -165,6 +173,7 @@ class Proveedores extends React.Component {
                 console.log(err);
                 this.setState({
                     mensaje: {
+                        titulo: 'Registrar Proveedor',
                         texto: `Error al registrar proveedor: ${err.message}`,
                         color: 'var(--danger)'
                     }
@@ -174,8 +183,39 @@ class Proveedores extends React.Component {
         document.getElementById('pop-reg-sino').close();
     }
 
-    detallar(id) {
-        console.log('estas detallando el proveedor ' + id);
+    async detallar(id) {
+        console.log(id);
+        await axios.get(`http://localhost:8000/api/proveedores/${id}/${infoUser}`, config)
+            .then(res => {
+                this.setState({
+                    proveedorData: {
+                        id: res.data.id,
+                        nombre: res.data.nombre,
+                        ruc: res.data.ruc,
+                        telefono: res.data.telefono,
+                        direccion: res.data.direccion,
+                        correo: res.data.correo,
+                        editable: false
+                    },
+                    boton: {
+                        texto: 'Detallar',
+                        pregunta: `Desea Detallar el proveedor ${res.data.nombre}`,
+                        titulo: 'Detalle Proveedor'
+                    }
+                })
+                this.abrirRegistro();
+            })
+            .catch(err => {
+                console.log(err);
+                this.setState({
+                    mensaje: {
+                        titulo: 'Cargar Proveedor',
+                        texto: `Error al traer al proveedor: ${err.message}`,
+                        color: 'var(--danger)'
+                    }
+                })
+                document.getElementById('pop-reg-conf').showModal();
+            })
     }
 
     async actualizar(id) {
@@ -190,12 +230,13 @@ class Proveedores extends React.Component {
                         telefono: res.data.telefono,
                         direccion: res.data.direccion,
                         correo: res.data.correo,
-                        update: true
+                        editable: true
                     },
                     boton: {
                         texto: 'Actualizar',
                         accion: this.confirmarActualizacion,
-                        pregunta: `Desea Actualizar el proveedor ${res.data.nombre}`
+                        pregunta: `Desea Actualizar el proveedor ${res.data.nombre}`,
+                        titulo: 'Registrar Proveedor'
                     }
                 })
                 this.abrirRegistro();
@@ -204,6 +245,7 @@ class Proveedores extends React.Component {
                 console.log(err);
                 this.setState({
                     mensaje: {
+                        titulo: 'Cargar Proveedor',
                         texto: `Error al traer al proveedor: ${err.message}`,
                         color: 'var(--danger)'
                     }
@@ -222,33 +264,59 @@ class Proveedores extends React.Component {
             direccion: this.state.proveedorData.direccion,
             correo: this.state.proveedorData.correo
         }, config)
-        .then(res => {
-            this.setState({
-                mensaje: {
-                    texto: 'Proveedor actualizado exitosamente',
-                    color: 'var(--success)'
-                }
+            .then(res => {
+                this.setState({
+                    mensaje: {
+                        titulo: 'Actualizar Proveedor',
+                        texto: 'Proveedor actualizado exitosamente',
+                        color: 'var(--success)'
+                    }
+                })
+                document.getElementById('pop-reg-conf').showModal();
+                this.traerProveedores();
             })
-            document.getElementById('pop-reg-conf').showModal();
-            this.traerProveedores();
-        })
-        .catch(err => {
-            console.log(err);
-            this.setState({
-                mensaje: {
-                    texto: `Error al actualizar al proveedor: ${err.message}`,
-                    color: 'var(--danger)'
-                }
+            .catch(err => {
+                console.log(err);
+                this.setState({
+                    mensaje: {
+                        titulo: 'Cargar Proveedor',
+                        texto: `Error al actualizar al proveedor: ${err.message}`,
+                        color: 'var(--danger)'
+                    }
+                })
+                document.getElementById('pop-reg-conf').showModal();
             })
-            document.getElementById('pop-reg-conf').showModal();
-        })
         document.getElementById('pop-reg-sino').close();
         document.getElementById('pop-registrar-user').close();
         this.limpiarProveedor();
     }
 
-    eliminar(id) {
-        console.log('estas eliminando el proveedor ' + id);
+    eliminar = async () => {
+        await axios.delete(`http://localhost:8000/api/proveedores/${this.state.eliminar.id}${infoUser}`, config)
+            .then(res => {
+                console.log(res);
+                this.setState({
+                    mensaje: {
+                        titulo: 'Eliminar Proveedor',
+                        texto: 'Proveedor eliminado exitosamente',
+                        color: 'var(--success)'
+                    }
+                })
+                document.getElementById('pop-reg-conf').showModal();
+                this.traerUsuarios();
+            })
+            .catch(err => {
+                console.log(err);
+                this.setState({
+                    mensaje: {
+                        titulo: 'Eliminar Proveedor',
+                        texto: `Error al eliminar Proveedor: ${err.message}`,
+                        color: 'var(--danger)'
+                    }
+                })
+                document.getElementById('pop-reg-conf').showModal();
+            })
+        document.getElementById('pop-eliminar-sino').close();
     }
 
     limpiarProveedor = () => {
@@ -260,12 +328,13 @@ class Proveedores extends React.Component {
                 telefono: '',
                 direccion: '',
                 correo: '',
-                update: false
+                editable: true
             },
             boton: {
                 texto: 'Registrar',
                 accion: this.registrarProveedor,
-                pregunta: '¿Desea Registrar el Proveedor?'
+                pregunta: '¿Desea Registrar el Proveedor?',
+                titulo: 'Registrar Proveedor'
             }
         })
     }
@@ -276,10 +345,24 @@ class Proveedores extends React.Component {
     }
 
     cerrarRegistro = (e) => {
-        e.preventDefault();        
+        e.preventDefault();
         this.limpiarProveedor();
         document.getElementById('pop-registrar-user').close();
         //this.limpiarProveedor();
+    }
+
+    ModalEliminar = (id, nombre) => {
+        this.setState({
+            eliminar: {
+                texto: `¿Eliminar a ${nombre}?`,
+                id: parseInt(id)
+            }
+        })
+        document.getElementById('pop-eliminar-sino').showModal();
+    }
+
+    cerrarEliminar() {
+        document.getElementById('pop-eliminar-sino').close();
     }
 
     componentDidMount() {
@@ -289,6 +372,7 @@ class Proveedores extends React.Component {
 
         this.traerProveedores();
     }
+
     render() {
         return (
             <>
@@ -327,7 +411,7 @@ class Proveedores extends React.Component {
                                     direccion={u.direccion}
                                     detallar={() => this.detallar(u.id)}
                                     actualizar={() => this.actualizar(u.id)}
-                                    eliminar={() => this.eliminar(u.id)}
+                                    eliminar={() => this.ModalEliminar(u.id, u.nombre)}
                                 />
                             )}
                         </tbody>
@@ -337,7 +421,7 @@ class Proveedores extends React.Component {
                 <RegistrarProveedor
                     idd='pop-registrar-user'
                     cerrar={this.cerrarRegistro}
-                    update={this.state.proveedorData.update}
+                    editable={this.state.proveedorData.editable}
                     cambio={this.capturarCambios}
                     /*-------------------------------------------------- */
                     textBtn={this.state.boton.texto}
@@ -352,8 +436,17 @@ class Proveedores extends React.Component {
                     telefono={this.state.proveedorData.telefono}
                     direccion={this.state.proveedorData.direccion}
                     correo={this.state.proveedorData.correo}
+                    tituloPop={this.state.mensaje.titulo}
+                    tituloPri={this.state.boton.titulo}
                 />
-
+                <PopUpSiNo
+                    idd='pop-eliminar-sino'
+                    titulo='Eliminar Proveedor'
+                    texto={this.state.eliminar.texto}
+                    si={this.eliminar}
+                    no={this.cerrarEliminar}
+                    color= 'var(--warning)'
+                />
             </>
         );
     }
