@@ -45,7 +45,7 @@ function GuiaRemision() {
                                 <label>N° de Guía de Remisión</label>
                                 <input type="text" className="input" />
                             </div>
-                            <div>
+                            {/* <div>
                                 <label >
                                     Fecha de translado
                                 </label>
@@ -54,17 +54,17 @@ function GuiaRemision() {
                                 <input type="text" className="input" />
                                 <input type="text" className="input" />
                                 <input type="text" className="input" />
-                            </div>
+                            </div> */}
                             <div>
                                 <label>Motivo de traslado</label>
-                                <textarea></textarea>
+                                <textarea className="textarea"></textarea>
                             </div>
                         </div>
 
                         <div className="cont-adjunto">
                             <button>Adjuntar Guía de Remision</button>
-                            <img alt='Imagen guia de remision'></img>
-                            <input type="file" />
+                            <img className="imagen" alt='Imagen guia de remision'></img>
+                            <input className="filechooser" type="file" />
                         </div>
                     </div>
 
