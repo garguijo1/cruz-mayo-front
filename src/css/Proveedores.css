@@ -2,7 +2,7 @@
 .cont_table_suppliers{
     overflow-x: auto;
     margin-top: 50px;
-    height: 500px;
+    height: 70vh;
     overflow-y: auto;
     position: relative;
 }
