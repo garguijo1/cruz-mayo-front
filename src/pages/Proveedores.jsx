@@ -222,26 +222,26 @@ class Proveedores extends React.Component {
             direccion: this.state.proveedorData.direccion,
             correo: this.state.proveedorData.correo
         }, config)
-        .then(res => {
-            this.setState({
-                mensaje: {
-                    texto: 'Proveedor actualizado exitosamente',
-                    color: 'var(--success)'
-                }
+            .then(res => {
+                this.setState({
+                    mensaje: {
+                        texto: 'Proveedor actualizado exitosamente',
+                        color: 'var(--success)'
+                    }
+                })
+                document.getElementById('pop-reg-conf').showModal();
+                this.traerProveedores();
             })
-            document.getElementById('pop-reg-conf').showModal();
-            this.traerProveedores();
-        })
-        .catch(err => {
-            console.log(err);
-            this.setState({
-                mensaje: {
-                    texto: `Error al actualizar al proveedor: ${err.message}`,
-                    color: 'var(--danger)'
-                }
+            .catch(err => {
+                console.log(err);
+                this.setState({
+                    mensaje: {
+                        texto: `Error al actualizar al proveedor: ${err.message}`,
+                        color: 'var(--danger)'
+                    }
+                })
+                document.getElementById('pop-reg-conf').showModal();
             })
-            document.getElementById('pop-reg-conf').showModal();
-        })
         document.getElementById('pop-reg-sino').close();
         document.getElementById('pop-registrar-user').close();
         this.limpiarProveedor();
@@ -276,7 +276,7 @@ class Proveedores extends React.Component {
     }
 
     cerrarRegistro = (e) => {
-        e.preventDefault();        
+        e.preventDefault();
         this.limpiarProveedor();
         document.getElementById('pop-registrar-user').close();
         //this.limpiarProveedor();

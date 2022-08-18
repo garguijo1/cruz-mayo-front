@@ -63,3 +63,10 @@ h1 {
 .btn2 {
     border-radius: 0 4px 4px 0;
 }
+
+
+.input-descripcion {
+    min-height: 100px;
+    min-width: 200px;
+
+}
