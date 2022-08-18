@@ -117,10 +117,6 @@ class Usuario extends React.Component{
         })
     }
 
-    click(){
-        this.traerUsuarios();
-    }
-
     capturarBusqueda = async(e)=>{
         e.persist();
         await this.setState({busqueda: e.target.value});
@@ -205,6 +201,7 @@ class Usuario extends React.Component{
                 },
                 boton:{
                     texto:'Actualizar',
+                    titulo: 'Actualizar Usuario',
                     accion : this.confirmarActualizacion,
                     pregunta: `Desea Actualizar el usuario ${res.data.nombre}`,
                     titulo: 'Actualizar Usuario'
@@ -311,6 +308,7 @@ class Usuario extends React.Component{
             },
             boton:{
                 texto:'Registrar',
+                titulo: 'Registrar Usuario',
                 accion : this.registrarUsuario,
                 pregunta: '¿Desea Registrar el Usuario?',
                 titulo: 'Registrar Usuario'
@@ -415,7 +413,9 @@ class Usuario extends React.Component{
                     tipo = {this.state.usuarioData.tipo_usuario}
                     sucursal = {this.state.usuarioData.sucursal}
                     tituloPop = {this.state.mensaje.titulo}
-                    tituloPri = {this.state.boton.titulo}
+
+                    titPrincipal = {this.state.boton.titulo}
+
                                 
                 />
                  <PopUpSiNo
