@@ -40,13 +40,25 @@ class RegistrarProveedor extends React.Component {
         document.getElementById('pop-reg-sino').close();
     }
 
+    editable(val) {
+        if (val) {
+            return (
+                <button
+                    className="btn_registrar_supplier"
+                    onClick={this.abrirModalSino}>
+                    {this.props.textBtn}
+                </button>
+            )
+        }
+    }
+
     render() {
         return (
             <>
                 <dialog className="dia-reg-supplier" id={this.props.idd}>
                     <div className="cont-reg-supplier">
                         <div className="cont-tit-reg-supplier">
-                            <h1>Registrar Proveedor</h1>
+                            <h1>{this.props.tituloPri}</h1>
                         </div>
                         <div className="cont-form-reg-supplier">
                             <div className="cont_form_reg_supplier">
@@ -57,6 +69,7 @@ class RegistrarProveedor extends React.Component {
                                         name="ruc"
                                         className="input_reg_supplier"
                                         value={this.props.ruc}
+                                        disabled={!this.props.editable}
                                         onChange={this.props.cambio} />
                                 </label>
                                 <label htmlFor="">
@@ -66,6 +79,7 @@ class RegistrarProveedor extends React.Component {
                                         name="nombre"
                                         className="input_reg_supplier"
                                         value={this.props.nombre}
+                                        disabled={!this.props.editable}
                                         onChange={this.props.cambio} />
                                 </label>
                                 <label htmlFor="">
@@ -75,6 +89,7 @@ class RegistrarProveedor extends React.Component {
                                         name="telefono"
                                         className="input_reg_supplier"
                                         value={this.props.telefono}
+                                        disabled={!this.props.editable}
                                         onChange={this.props.cambio} />
                                 </label>
                             </div>
@@ -86,6 +101,7 @@ class RegistrarProveedor extends React.Component {
                                         name="direccion"
                                         className="input_reg2_supplier"
                                         value={this.props.direccion}
+                                        disabled={!this.props.editable}
                                         onChange={this.props.cambio} />
                                 </label>
                                 <label htmlFor="">
@@ -95,6 +111,7 @@ class RegistrarProveedor extends React.Component {
                                         name="correo"
                                         className="input_reg2_supplier"
                                         value={this.props.correo}
+                                        disabled={!this.props.editable}
                                         onChange={this.props.cambio} />
                                 </label>
                             </div>
@@ -105,11 +122,7 @@ class RegistrarProveedor extends React.Component {
                                 onClick={this.props.cerrar}>
                                 Cancelar
                             </button>
-                            <button
-                                className="btn_registrar_supplier"
-                                onClick={this.abrirModalSino}>
-                                {this.props.textBtn}
-                            </button>
+                            {this.editable(this.props.editable)}
                         </div>
                     </div>
                 </dialog>
