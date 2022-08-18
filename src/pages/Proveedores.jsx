@@ -304,7 +304,7 @@ class Proveedores extends React.Component {
                     }
                 })
                 document.getElementById('pop-reg-conf').showModal();
-                this.traerUsuarios();
+                this.traerProveedores();
             })
             .catch(err => {
                 console.log(err);
