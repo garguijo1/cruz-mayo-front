@@ -322,7 +322,7 @@ class Productos extends React.Component {
 
     limpiarProducto = () => {
         this.setState({
-            productoData: {
+            productosData: {
                 id: '',
                 nombre: '',
                 unidad: '',
@@ -349,7 +349,6 @@ class Productos extends React.Component {
         e.preventDefault();
         this.limpiarProducto();
         document.getElementById('pop-registrar-user').close();
-        //this.limpiarProveedor();
     }
 
     ModalEliminar = (id, nombre)=>{

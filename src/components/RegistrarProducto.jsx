@@ -94,18 +94,18 @@ class RegistrarProducto extends React.Component {
                                         onChange={this.props.cambio} />
                                 </label>
                                 <label htmlFor="">
-                                    <div>Laboratorio</div>
+                                    <div>Precio</div>
                                     <input
-                                        type="text"
-                                        name="laboratorio"
+                                        type="number"
+                                        name="precio"
                                         className="input_reg_supplier"
-                                        value={this.props.laboratorio}
+                                        value={this.props.precio}
                                         disabled={!this.props.editable}
                                         onChange={this.props.cambio} />
                                 </label>
                                 <label htmlFor="">
                                     <div>Formato</div>
-                                    <select className="input_reg" onChange={this.props.cambio} name="unidad" id="unidad" >
+                                    <select className="input_reg" onChange={this.props.cambio} name="unidad" id="unidad" disabled={!this.props.editable}>
                                         <option value="-1">Seleccione el Formato</option>
                                         {this.state.tipos.map(s => <option key={s.id} value={s.nombre} selected={this.props.unidad === s.id}>{s.nombre}</option>)}
                                     </select>
@@ -113,12 +113,12 @@ class RegistrarProducto extends React.Component {
                             </div>
                             <div className="cont_form_reg_supplier">
                                 <label htmlFor="">
-                                    <div>Precio</div>
+                                    <div>Laboratorio</div>
                                     <input
-                                        type="number"
-                                        name="precio"
-                                        className="input_reg_supplier"
-                                        value={this.props.precio}
+                                        type="text"
+                                        name="laboratorio"
+                                        className="input_reg2_supplier"
+                                        value={this.props.laboratorio}
                                         disabled={!this.props.editable}
                                         onChange={this.props.cambio} />
                                 </label>
