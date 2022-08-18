@@ -26,7 +26,6 @@ function Productos() {
 
   function eliminarProducto(e) {
     e.preventDefault();
-
     document.getElementById('pop-reg-sino').showModal();
   }
 

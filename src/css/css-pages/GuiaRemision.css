@@ -1,37 +1,4 @@
-.farm-1 {
-    color: #4d4d4d;
-    display: inline;
-    font-size: 30px;
-    line-height: 36px;
-    text-align: center;
-}
-
-.farm-2 {
-    color: #67ab9f;
-    display: inline;
-    font-size: 30px;
-    font-weight: 700;
-    line-height: 36px;
-    text-align: center;
-}
-
-.form-credenciales input:not(input[type="submit"]) {
-    background-color: #ffffff;
-    border-color: #ced4da;
-    border-radius: 0px 6px 6px 0px;
-    border-style: solid;
-    border-width: 1px;
-    color: #1d2129;
-    display: inline-block;
-    font-family: Helvetica;
-    font-size: 17px;
-    line-height: 16px;
-    padding: 2px 16px;
-    width: auto;
-
-}
-
-.a-container {
+.btn-buscar {
     align-items: center;
     background-color: #67ab9f;
     border-color: #ced4da;
@@ -43,7 +10,11 @@
     line-height: 24px;
     padding: 2px 12px;
     text-align: center;
+    cursor: pointer;
 }
+
+
+
 
 * {
     font-family: Helvetica, Arial, sans-serif;
@@ -55,7 +26,6 @@
     display: flex;
     justify-content: center;
     flex-wrap: nowrap;
-    -webkit-box-align: stretch;
     align-items: stretch;
     width: 100%;
     margin-top: 10px;
@@ -77,9 +47,21 @@
 .cont-datos-proveedor {
     display: flex;
     flex-wrap: wrap;
+    flex-direction: row;
     justify-content: center;
     padding: 10px;
     margin: 11px;
+
+}
+
+.cont-datos-proveedor span[class="campo"] {
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+}
+
+.cont-datos-proveedor input {
+    min-width: 280px;
 }
 
 .cont-datos-guia * {
@@ -95,6 +77,69 @@
     flex-wrap: nowrap;
     flex-direction: row;
     justify-content: center;
+}
+
+.cont-adjunto {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 35px;
+}
+
+.cont-adjunto * {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    margin: 25px;
+    padding: 5px;
+
+
+}
+
+.cont-adjunto button {
+    border-radius: 15px;
+    background-color: #67ab9f;
+    border: solid 2px #fdfdfd;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 35px;
+    color: #fdfdfd;
+    cursor: pointer;
+}
+
+.btn-buscar:hover {
+    background-color: #6ee7d1;
+}
+
+.cont-adjunto button:hover {
+    background-color: #6ee7d1;
+}
+
+.cont-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.cont-btn buttom {
+    background-color: #ea6b66;
+    border: solid 1px black;
+    border-radius: 8px;
+    padding: 10px 30px 10px 30px;
+}
+
+.textarea {
+    width: 500px;
+    height: 200px;
+}
+
+.input {
+    border-radius: 10px;
+    height: 25px;
+    border: solid 1px black;
+    padding-left: 15px;
 }
 
 label {

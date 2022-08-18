@@ -23,19 +23,19 @@ function GuiaRemision() {
                 <div className="input-group">
                     <input className="input-numero" type="text" placeholder="Número de ornden de compra" />
                     <div>
-                        <button className="a-container">Buscar</button>
+                        <button className="btn-buscar">Buscar</button>
                     </div>
                 </div>
 
                 <div className="cont-main">
                     <div className="cont-datos-proveedor">
-                        <span>
+                        <span className="campo">
                             <label>Nombre de Proveedor</label>
-                            <input type="text" />
+                            <input type="text" className="input" />
                         </span>
-                        <span>
+                        <span className="campo">
                             <label>Direccion de Proveedor</label>
-                            <input type="text" />
+                            <input type="text" className="input" />
                         </span>
                     </div>
                     <hr />
@@ -43,7 +43,7 @@ function GuiaRemision() {
                         <div className="cont-datos-guia">
                             <div>
                                 <label>N° de Guía de Remisión</label>
-                                <input type="text" />
+                                <input type="text" className="input" />
                             </div>
                             <div>
                                 <label >
@@ -51,9 +51,9 @@ function GuiaRemision() {
                                 </label>
                             </div>
                             <div className="cont-inputs">
-                                <input type="text" />
-                                <input type="text" />
-                                <input type="text" />
+                                <input type="text" className="input" />
+                                <input type="text" className="input" />
+                                <input type="text" className="input" />
                             </div>
                             <div>
                                 <label>Motivo de traslado</label>
@@ -66,6 +66,10 @@ function GuiaRemision() {
                             <img alt='Imagen guia de remision'></img>
                             <input type="file" />
                         </div>
+                    </div>
+
+                    <div className="cont-btn">
+                        <buttom>Registrar</buttom>
                     </div>
                 </div>
             </div>
